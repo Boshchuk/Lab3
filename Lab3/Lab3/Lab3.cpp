@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include <ostream>
 #include <iostream>
+#include <vector>
 
 /*
 const int maxm = 5;
@@ -138,32 +139,52 @@ const int V = 20; // 4*5
 void Dijkstra(int** GR, int st)
 {
 	int distance[V], count, index, i, u, m = st + 1;
+
+	vector<int> trace[V];
+
 	bool visited[V];
 	for (i = 0; i<V; i++)
 	{
-		distance[i] = INT_MAX; visited[i] = false;
+		distance[i] = INT_MAX;
+		visited[i] = false;
 	}
 	distance[st] = 0;
 	for (count = 0; count<V - 1; count++)
 	{
 		int min = INT_MAX;
-		for (i = 0; i<V; i++)
+		for (i = 0; i < V; i++)
+		{
 			if (!visited[i] && distance[i] <= min)
 			{
-				min = distance[i]; index = i;
+				min = distance[i];
+				index = i;
 			}
+		}
 		u = index;
 		visited[u] = true;
-		for (i = 0; i<V; i++)
+		for (i = 0; i < V; i++) 
+		{
 			if (!visited[i] && GR[u][i] && distance[u] != INT_MAX &&
-				distance[u] + GR[u][i]<distance[i])
+				distance[u] + GR[u][i] < distance[i])
+			{
+			/*	trace[i].push_back(distance[u]);
+				trace[i].push_back(GR[u][i]);*/
 				distance[i] = distance[u] + GR[u][i];
+			}
+		}
 	}
 	cout << "Стоимость пути из начальной вершины до остальных:\t\n";
 	for (i = 0; i < V; i++) {
 		if (distance[i] != INT_MAX)
 		{
 			cout << m << " > " << i + 1 << " = " << distance[i] << endl;
+
+			//for (auto it = trace[i].begin(); it != trace[i].end(); ++it)
+			//{
+			//	cout << *it << " ";
+			//}
+			//cout << endl;
+
 		}
 		else
 		{
@@ -305,8 +326,8 @@ int** GenereateSmegnostGraph(int matrix[n][m])
 		}
 
 		// check 8
-		cI = i ;
-		cJ = j - 1;
+		cI = i -1 ;
+		cJ = j ;
 		if (IsInRange(cI, cJ))
 		{
 			//find number
@@ -330,10 +351,10 @@ void main()
 	setlocale(LC_ALL, "Rus");
 
 	int strafMatrix[n][m] = {
-		{3,2,8,6,4},
-		{4,7,12,9,1},
-		{55,8,3,2,8},
-		{20,7,4,9,1},
+		{3, 2, 8, 6, 4},
+		{4, 7, 12,9, 1},
+		{55,8, 3, 2, 8},
+		{20,7, 4, 9, 1},
 	};
 
 	int **GR = GenereateSmegnostGraph(strafMatrix);
@@ -349,14 +370,7 @@ void main()
 		}
 		cout << endl;
 	}
-	
-	// = {
-		/*{ 0, 1, 4, 0, 2, 0 },
-		{ 0, 0, 0, 9, 0, 0 },
-		{ 4, 0, 0, 7, 0, 0 },
-		{ 0, 9, 7, 0, 0, 2 },
-		{ 0, 0, 0, 0, 0, 8 },
-		{ 0, 0, 0, 0, 0, 0 } };*/
+
 	cout << "Начальная вершина >> "; cin >> start;
 	Dijkstra(GR, start - 1);
 
