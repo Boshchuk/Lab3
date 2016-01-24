@@ -179,6 +179,8 @@ int** GenereateSmegnostGraph(int matrix[size_n][size_m])
 			7 6 5
 		*/
 
+		//comment 1-4 and 8
+
 		//check 1
 
 		cI = i - 1;
@@ -220,6 +222,22 @@ int** GenereateSmegnostGraph(int matrix[size_n][size_m])
 			//write into smejnost
 			table[index][tV] = matrix[cJ][cI];
 		}
+
+
+		// check 8
+		cI = i - 1;
+		cJ = j;
+		if (IsInRange(cI, cJ))
+		{
+			//find number
+
+			int tV = index - 1;
+
+			//write into smejnost
+			table[index][tV] = matrix[cJ][cI];
+		}
+		//end of comment
+
 
 		// check 4
 		cI = i + 1;
@@ -273,18 +291,6 @@ int** GenereateSmegnostGraph(int matrix[size_n][size_m])
 			table[index][tV] = matrix[cJ][cI];
 		}
 
-		// check 8
-		cI = i -1 ;
-		cJ = j ;
-		if (IsInRange(cI, cJ))
-		{
-			//find number
-
-			int tV = index - 1;
-
-			//write into smejnost
-			table[index][tV] = matrix[cJ][cI];
-		}
 	}
 
 	return table;
@@ -365,8 +371,8 @@ void main()
 	}
 
 
-	cout << "Начальная вершина >> ";std::cin >> start;
-
+	//cout << "Начальная вершина >> ";std::cin >> start;
+	start = 1;
 	int j = start - 1 / size_m;
 	int i = start -1 - j*size_m;
 
