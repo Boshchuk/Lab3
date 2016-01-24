@@ -57,8 +57,6 @@ Result DijkstraWithAction(int** GR, int st, int stratValue, bool part1)
 			if (!visited[i] && GR[u][i] && distance[u] != INT_MAX &&
 				distance[u] + GR[u][i] < distance[i])
 			{
-				//trace[i].push_back(distance[u]);
-
 				for (auto it = trace[u].begin(); it != trace[u].end(); ++it)
 				{
 					trace[i].push_back(*it);
@@ -224,6 +222,19 @@ int** GenereateSmegnostGraph(int matrix[size_n][size_m])
 		}
 
 
+		// check 4
+		cI = i + 1;
+		cJ = j;
+		if (IsInRange(cI, cJ))
+		{
+			//find number
+
+			int tV = index + 1;
+
+			//write into smejnost
+			table[index][tV] = matrix[cJ][cI];
+		}
+
 		// check 8
 		cI = i - 1;
 		cJ = j;
@@ -239,18 +250,6 @@ int** GenereateSmegnostGraph(int matrix[size_n][size_m])
 		//end of comment
 
 
-		// check 4
-		cI = i + 1;
-		cJ = j ;
-		if (IsInRange(cI, cJ))
-		{
-			//find number
-
-			int tV = index +1;
-
-			//write into smejnost
-			table[index][tV] = matrix[cJ][ cI];
-		}
 
 		// check 5
 		cI = i + 1;
