@@ -22,7 +22,7 @@ struct Result
 };
 
 //алгоритм Дейкстры
-Result DijkstraWithAction(int** GR, int st, int stratValue, bool part1)
+Result DijkstraWithAction(int** GR, int st, int stratValue, bool partA)
 {
 	int distance[V], count, index, i, u, m = st + 1;
 
@@ -67,7 +67,7 @@ Result DijkstraWithAction(int** GR, int st, int stratValue, bool part1)
 		}
 	}
 
-	if (part1)
+	if (partA)
 	{
 		int arMin[size_n - 1];
 		int dis[size_n - 1];
@@ -92,11 +92,12 @@ Result DijkstraWithAction(int** GR, int st, int stratValue, bool part1)
 		}
 
 		Result res;
-		//res.Pos = 
 		for (int i = 0; i < size_n - 1;i++)
 		{
 			int number = arMin[i];
-		/*	cout << "Pos of min stroku in stroka:" << i + 2 << "      " <<arMin[i] << endl;
+			//debug
+		/*	
+		cout << "Pos of min stroku in stroka:" << i + 2 << "      " <<arMin[i] << endl;
 			cout << "Put:";
 			
 			for (auto it = trace[number].begin(); it != trace[number].end(); ++it)
@@ -146,7 +147,7 @@ bool IsInRange(int cI,int cJ)
 	return (cI >= 0 && cI < size_m) && (cJ>=0 && cJ < size_n);
 }
 
-int** GenereateSmegnostGraph(int matrix[size_n][size_m])
+int** GenereateSmegnostGraph(int matrix[size_n][size_m], bool useAllWays)
 {
 	int** table = new int*[V];
 	for (int i = 0; i < V; ++i)
@@ -177,77 +178,81 @@ int** GenereateSmegnostGraph(int matrix[size_n][size_m])
 			7 6 5
 		*/
 
-		//comment 1-4 and 8
-
-		//check 1
-
-		cI = i - 1;
-		cJ = j - 1;
-
-		// if in range
-		if (IsInRange(cI,cJ))
+		if (useAllWays)
 		{
-			//find number
+			//comment 1-4 and 8
 
-			int tV = index - size_m - 1;
+			//check 1
 
-			//write into smejnost
-			table[index][tV] = matrix[cJ][cI];
+			cI = i - 1;
+			cJ = j - 1;
+
+			// if in range
+			if (IsInRange(cI, cJ))
+			{
+				//find number
+
+				int tV = index - size_m - 1;
+
+				//write into smejnost
+				table[index][tV] = matrix[cJ][cI];
+			}
+
+			// check 2
+			cI = i;
+			cJ = j - 1;
+			if (IsInRange(cI, cJ))
+			{
+				//find number
+
+				int tV = index - size_m;
+
+				//write into smejnost
+				table[index][tV] = matrix[cJ][cI];
+			}
+
+			// check 3
+			cI = i + 1;
+			cJ = j - 1;
+			if (IsInRange(cI, cJ))
+			{
+				//find number
+
+				int tV = index - (size_m - 1);
+
+				//write into smejnost
+				table[index][tV] = matrix[cJ][cI];
+			}
+
+
+			// check 4
+			cI = i + 1;
+			cJ = j;
+			if (IsInRange(cI, cJ))
+			{
+				//find number
+
+				int tV = index + 1;
+
+				//write into smejnost
+				table[index][tV] = matrix[cJ][cI];
+			}
+
+			// check 8
+			cI = i - 1;
+			cJ = j;
+			if (IsInRange(cI, cJ))
+			{
+				//find number
+
+				int tV = index - 1;
+
+				//write into smejnost
+				table[index][tV] = matrix[cJ][cI];
+			}
+			//end of comment
 		}
-
-		// check 2
-		cI = i;
-		cJ = j-1;
-		if (IsInRange(cI, cJ))
-		{
-			//find number
-
-			int tV = index - size_m;
-
-			//write into smejnost
-			table[index][tV] = matrix[cJ][cI];
-		}
-
-		// check 3
-		cI = i + 1;
-		cJ = j - 1;
-		if (IsInRange(cI, cJ))
-		{
-			//find number
-
-			int tV = index - (size_m - 1);
-
-			//write into smejnost
-			table[index][tV] = matrix[cJ][cI];
-		}
-
-
-		// check 4
-		cI = i + 1;
-		cJ = j;
-		if (IsInRange(cI, cJ))
-		{
-			//find number
-
-			int tV = index + 1;
-
-			//write into smejnost
-			table[index][tV] = matrix[cJ][cI];
-		}
-
-		// check 8
-		cI = i - 1;
-		cJ = j;
-		if (IsInRange(cI, cJ))
-		{
-			//find number
-
-			int tV = index - 1;
-
-			//write into smejnost
-			table[index][tV] = matrix[cJ][cI];
-		}
-		//end of comment
+		
 
 
 
@@ -308,10 +313,13 @@ void main()
 		{20,7, 4, 9, 1},
 	};
 
-	int **GR = GenereateSmegnostGraph(strafMatrix);
+	//
+	
 
 	int start;
 	
+	cout << "a) 1)" << endl;
+
 	// рисование смежности для проверки
 	/*for (int i = 0; i < V; ++i)
 	{
@@ -321,7 +329,7 @@ void main()
 		}
 		cout << endl;
 	}*/
-
+	int **GR = GenereateSmegnostGraph(strafMatrix, false);
 	Result theMin;
 	for (int i=0; i < size_n - 1; i++)
 	{
@@ -358,6 +366,7 @@ void main()
 
 	
 
+	
 	for (int line = 0; line < size_n - 1; line++)
 	{
 		cout << "Минимальный штраф c 1 до строки #"<< line+2 << ": "<<theMin.ForEachStr[line].straph + theMin.ForEachStr[line].trace.front() <<endl;
@@ -368,16 +377,86 @@ void main()
 		}
 		cout << endl;
 	}
+	cout << endl;
+	cout << endl;
+
 
 
 	//cout << "Начальная вершина >> ";std::cin >> start;
 	start = 1;
 	int j = start - 1 / size_m;
 	int i = start -1 - j*size_m;
-
+	cout << "b) 1)" << endl;
 	Result res =  DijkstraWithAction(GR, start - 1, strafMatrix[j][i],false);
+	cout << endl;
+	cout << endl;
 
-	//GR = nullptr;
+
+
+	cout << "a) 2)" << endl;
+
+	
+	GR = GenereateSmegnostGraph(strafMatrix, true);
+
+	for (int i = 0; i < size_n - 1; i++)
+	{
+		theMin.ForEachStr[i].straph = INT_MAX;
+	}
+
+
+	for (int i = 0; i < size_m; i++)
+	{
+		int jk = i / size_m;
+		int ik = i - jk*size_m;
+		Result res = DijkstraWithAction(GR, i, strafMatrix[jk][ik], true);
+
+		for (int ii = 0; ii < size_n - 1; ii++)
+		{
+			if (res.ForEachStr[ii].straph <= theMin.ForEachStr[ii].straph)
+			{
+				if (res.ForEachStr[ii].straph == theMin.ForEachStr[ii].straph)
+				{
+					if (res.ForEachStr[ii].trace.front() < theMin.ForEachStr[ii].trace.front())
+					{
+						theMin.ForEachStr[ii].straph = res.ForEachStr[ii].straph;
+						theMin.ForEachStr[ii].trace = res.ForEachStr[ii].trace;
+					}
+				}
+				else
+				{
+					theMin.ForEachStr[ii].straph = res.ForEachStr[ii].straph;
+					theMin.ForEachStr[ii].trace = res.ForEachStr[ii].trace;
+				}
+			}
+		}
+	}
+
+	for (int line = 0; line < size_n - 1; line++)
+	{
+		cout << "Минимальный штраф c 1 до строки #" << line + 2 << ": " << theMin.ForEachStr[line].straph + theMin.ForEachStr[line].trace.front() << endl;
+		cout << "Маршрут штрафов:";
+		for (auto it = theMin.ForEachStr[line].trace.begin(); it != theMin.ForEachStr[line].trace.end(); ++it)
+		{
+			cout << *it << " ";
+		}
+		cout << endl;
+	}
+	cout << endl;
+	cout << endl;
+
+
+
+	//cout << "Начальная вершина >> ";std::cin >> start;
+	start = 1;
+	j = start - 1 / size_m;
+	i = start - 1 - j*size_m;
+	cout << "b) 2)" << endl;
+	res = DijkstraWithAction(GR, start - 1, strafMatrix[j][i], false);
+	cout << endl;
+	cout << endl;
+
+
+
 
 	std::system("pause>>void");
 }
