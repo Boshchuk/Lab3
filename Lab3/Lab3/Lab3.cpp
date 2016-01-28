@@ -2,6 +2,7 @@
 #include <ostream>
 #include <iostream>
 #include <vector>
+#include <ctime>
 
 using namespace std;
 
@@ -300,21 +301,50 @@ int** GenereateSmegnostGraph(int matrix[size_n][size_m], bool useAllWays)
 	return table;
 }
 
+int RangedRandDemo(int range_min, int range_max)
+{
+	// Generate random numbers in the half-closed interval
+	// [range_min, range_max). In other words,
+	// range_min <= random number < range_max
+	int i;
+	
+	return	(double)rand() / (RAND_MAX + 1) * (range_max - range_min)  + range_min;
+}
+
+
 //главная функция
 void main()
 {
-
 	setlocale(LC_ALL, "Rus");
 
-	int strafMatrix[size_n][size_m] = {
+	srand(static_cast<unsigned>(time(nullptr)));
+
+	int strafMatrix[size_n][size_m]; /*= {
 		{3, 2, 8, 6, 4},
 		{4, 7, 12,9, 1},
 		{55,8, 3, 2, 8},
 		{20,7, 4, 9, 1},
-	};
+	};*/
 
-	//
+	// random insert weight;
 	
+	for (int i = 0; i < size_n; i ++)
+	{
+		for (int j = 0; j < size_m; j++)
+		{
+			strafMatrix[i][j] = RangedRandDemo(1, 100);
+		}
+	}
+
+	for (int i = 0; i < size_n; i++)
+	{
+		for (int j = 0; j < size_m; j++)
+		{
+			std::cout << strafMatrix[i][j] << " ";
+		}
+		std::cout <<  std::endl;
+	}
+
 
 	int start;
 	
